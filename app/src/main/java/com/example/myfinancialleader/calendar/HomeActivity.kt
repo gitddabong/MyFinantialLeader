@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.myfinancialleader.calendar.ui.theme.CalendarView
 import com.example.myfinancialleader.calendar.ui.theme.MyFinancialLeaderTheme
+import java.time.DayOfWeek
+import java.time.LocalDate
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,12 +35,9 @@ class HomeActivity : ComponentActivity() {
 @Composable
 @Preview(showBackground = true)
 fun showCalendarView() {
-    val matrix = listOf(
-        listOf(1,2,3),
-        listOf(4,5,6),
-        listOf(7,8,9)
-    )
-    CalendarView(matrix)
+//    CalendarView(getCalendarData(getDummyDate()))
+//    CalendarView(getCalendarData(CalendarDate(2023,12,5)))
+    CalendarView(getCalendarData(CalendarDate(2024,9,16)))
 }
 
 @Composable

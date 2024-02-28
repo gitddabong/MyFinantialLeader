@@ -1,6 +1,7 @@
 package com.example.myfinancialleader
 
 import android.content.Intent
+import android.icu.util.LocaleData
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.myfinancialleader.calendar.HomeActivity
 import com.example.myfinancialleader.ui.theme.MyFinancialLeaderTheme
+import java.time.LocalDate
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +36,11 @@ class MainActivity : ComponentActivity() {
                     ) {
                         Text(text = "액티비티 이동")
                     }
+                    
+                    Text(
+                        text = "Hello ${LocalDate.now()}!",
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
                 }
             }
@@ -44,7 +51,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Hello ${LocalDate.now()}!",
         modifier = modifier
     )
 }
