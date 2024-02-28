@@ -1,22 +1,19 @@
-package com.example.myfinancialleader
+package com.example.myfinancialleader.calendar
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.myfinancialleader.calendar.HomeActivity
-import com.example.myfinancialleader.ui.theme.MyFinancialLeaderTheme
+import com.example.myfinancialleader.calendar.ui.theme.CalendarView
+import com.example.myfinancialleader.calendar.ui.theme.MyFinancialLeaderTheme
 
-class MainActivity : ComponentActivity() {
+class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -26,15 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = {
-                            startActivity(Intent(this@MainActivity, HomeActivity::class.java))
-                        }
-                    ) {
-                        Text(text = "액티비티 이동")
-                    }
-
+                    showCalendarView()
                 }
             }
         }
@@ -42,7 +31,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+@Preview(showBackground = true)
+fun showCalendarView() {
+    val matrix = listOf(
+        listOf(1,2,3),
+        listOf(4,5,6),
+        listOf(7,8,9)
+    )
+    CalendarView(matrix)
+}
+
+@Composable
+fun Greeting2(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
         modifier = modifier
@@ -51,8 +51,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun GreetingPreview2() {
     MyFinancialLeaderTheme {
-        Greeting("Android")
+        Greeting2("Android")
     }
 }
