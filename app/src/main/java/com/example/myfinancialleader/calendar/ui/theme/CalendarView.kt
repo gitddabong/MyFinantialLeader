@@ -1,6 +1,7 @@
 package com.example.myfinancialleader.calendar.ui.theme
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,7 +47,7 @@ fun CalendarViewPager() {
 
         Text(
             modifier = Modifier.constrainAs(calendarTitle) { top.linkTo(parent.top, margin = 10.dp) },
-            text = "${getTargetDate(pagerState, LocalDate.now()).month}"
+            text = "${getTargetDate(LocalDate.now(), pagerState).month}"
         )
 
         HorizontalPager(
@@ -61,17 +62,18 @@ fun CalendarViewPager() {
             )
 
             CalendarView(
-                getCalendarData(targetDate)
+                getCalendarData(targetDate),
+                pagerState
             )
-
 
 //        CalendarView(getCalendarData(CalendarDate(2024, 9, 16)))
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CalendarView(dataList: List<String>) {
+fun CalendarView(dataList: List<String>, pagerState: PagerState) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 7),
         contentPadding = PaddingValues(0.dp), // 각 아이템 사이의 패딩을 0으로 설정하여 간격 없음을 보장합니다.
@@ -79,7 +81,12 @@ fun CalendarView(dataList: List<String>) {
         horizontalArrangement = Arrangement.spacedBy(0.dp) // 가로 간격을 0으로 설정합니다.
     ) {
         itemsIndexed(dataList) {rowIndex, rowData ->
-            CellItem(text = rowData)
+            val isFocused = rowData.contains("${getTargetDate(LocalDate.now(), pagerState).month}월")
+            if (isFocused) {
+                CellItem(text = rowData)
+            } else {
+                BlankItem()
+            }
         }
     }
 }
@@ -89,15 +96,26 @@ fun CellItem(text: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .border(1.dp, Color.Gray),
+            .border(1.dp, Color.Gray)
+            .background(Color.White),
         contentAlignment = Alignment.Center
     ) {
         Text(text = "$text")
     }
 }
 
+@Composable
+fun BlankItem() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.dp, Color.Gray)
+            .background(Color.Gray),
+    )
+}
+
 @OptIn(ExperimentalFoundationApi::class)
-private fun getTargetDate(pagerState: PagerState, baseDate: LocalDate): CalendarDate {
+private fun getTargetDate(baseDate: LocalDate, pagerState: PagerState): CalendarDate {
     val currentPage = pagerState.currentPage
     val targetDate = baseDate.plusMonths((currentPage - pagerState.initialPage).toLong())
 
