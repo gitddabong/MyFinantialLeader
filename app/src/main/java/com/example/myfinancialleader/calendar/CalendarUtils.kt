@@ -6,7 +6,7 @@ import java.time.LocalDate
 /**
  * 2024-02-28 과 같은 ISO 8601 포맷으로 입력합니다.
  */
-fun getCalendarData(targetDate: CalendarDate): List<List<String>> {
+fun getCalendarData(targetDate: CalendarDate): List<String> {
     // 연도, 월에 맞춰서 7의 배수의 캘린더 리스트 생성
     // 예를 들어 3월 1일이 목요일이라면, 그 전 데이터는 2월의 데이터로 채워야 함.
     // 3월 31일이 화요일이라면, 그 이후의 데이터는 4월의 데이터로 채워야 함.
@@ -55,20 +55,7 @@ fun getCalendarData(targetDate: CalendarDate): List<List<String>> {
         dataOfOnePage[i] = "${nextMonth}월\n ${count}일"
         count++
     }
-
-    return splitArrayIntoChunks(dataOfOnePage)
-}
-
-fun splitArrayIntoChunks(list: List<String>): List<List<String>> {
-    val chunkSize = 7
-    val result = mutableListOf<List<String>>()
-
-    for (i in list.indices step chunkSize) {
-        val chunk = list.slice(i until minOf(i + chunkSize, list.size))
-        result.add(chunk)
-    }
-
-    return result
+    return dataOfOnePage
 }
 
 fun getDaysInMonths(year: Int): List<Int> {
