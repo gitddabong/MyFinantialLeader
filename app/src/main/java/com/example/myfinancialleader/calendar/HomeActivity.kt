@@ -10,12 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.constraintlayout.compose.ConstraintLayout
-import com.example.myfinancialleader.calendar.ui.theme.CalendarView
+import androidx.lifecycle.lifecycleScope
 import com.example.myfinancialleader.calendar.ui.theme.CalendarViewPager
 import com.example.myfinancialleader.calendar.ui.theme.MyFinancialLeaderTheme
-import java.time.DayOfWeek
-import java.time.LocalDate
+import kotlinx.coroutines.CoroutineScope
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,11 +33,7 @@ class HomeActivity : ComponentActivity() {
 }
 
 @Composable
-@Preview(showBackground = true)
 fun showCalendarView() {
-//    CalendarView(getCalendarData(getDummyDate()))
-//    CalendarView(getCalendarData(CalendarDate(2023,12,5)))
-//    CalendarView(getCalendarData(CalendarDate(2024,9,16)))
     CalendarViewPager()
 }
 
