@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,7 +45,7 @@ fun CalendarViewPager() {
         modifier = Modifier.fillMaxSize()
     ) {
         val pagerState = createCalendarPagerState()
-        val (calendarTitle, calendarTable) = createRefs()
+        val (calendarTitle, dayOfWeekList, calendarTable) = createRefs()
 
         CalendarTitleLayout(
             modifier = Modifier
@@ -56,10 +57,31 @@ fun CalendarViewPager() {
             pagerState = pagerState
         )
 
+        val dayOfWeekItems = listOf(
+            "SUN","MON", "TUS", "WED", "THU", "FRI", "SAT"
+        )
+
+        LazyVerticalGrid(
+            modifier = Modifier
+                .constrainAs(dayOfWeekList) {
+                    top.linkTo(calendarTitle.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
+            columns = GridCells.Fixed(count = 7),
+            contentPadding = PaddingValues(0.dp), // 각 아이템 사이의 패딩을 0으로 설정하여 간격 없음을 보장합니다.
+            verticalArrangement = Arrangement.spacedBy(0.dp), // 세로 간격을 0으로 설정합니다.
+            horizontalArrangement = Arrangement.spacedBy(0.dp), // 가로 간격을 0으로 설정합니다.
+        ) {
+            itemsIndexed(dayOfWeekItems) {rowIndex, rowData ->
+                CellItem(text = rowData)
+            }
+        }
+
         HorizontalPager(
             modifier = Modifier
                 .fillMaxWidth()
-                .constrainAs(calendarTable) { top.linkTo(calendarTitle.bottom, margin = 5.dp) },
+                .constrainAs(calendarTable) { top.linkTo(dayOfWeekList.bottom, margin = 5.dp) },
             state = pagerState,
         ) { page ->
             val targetDate = getTargetDate(
@@ -68,8 +90,8 @@ fun CalendarViewPager() {
             )
 
             CalendarView(
-                getCalendarData(targetDate),
-                pagerState
+                dataList = getCalendarData(targetDate),
+                pagerState = pagerState
             )
         }
     }
