@@ -1,4 +1,4 @@
-package com.example.myfinancialleader.calendar.ui.theme.expense_list
+package com.example.myfinancialleader.home.expense_list
 
 data class ExpenseData(
     val expenseType: ExpenseType,

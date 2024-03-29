@@ -1,4 +1,4 @@
-package com.example.myfinancialleader.calendar.ui.theme.expense_list
+package com.example.myfinancialleader.home.expense_list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 
@@ -83,10 +82,12 @@ fun getDummyExpenseDataList(): List<ExpenseData> {
         ExpenseData(ExpenseType.EXPENSE, "쿠팡 주문", "양배추", 19600),
         ExpenseData(ExpenseType.EXPENSE, "공과금", "전기 요금", 8700),
         ExpenseData(ExpenseType.INCOME, "캐시백", "교통카드 캐시백", 15200),
-        ExpenseData(ExpenseType.EXPENSE, "편의점", "술안주", 5300),ExpenseData(ExpenseType.EXPENSE, "쿠팡 주문", "양배추", 19600),
+        ExpenseData(ExpenseType.EXPENSE, "편의점", "술안주", 5300),
+        ExpenseData(ExpenseType.EXPENSE, "쿠팡 주문", "양배추", 19600),
         ExpenseData(ExpenseType.EXPENSE, "공과금", "전기 요금", 8700),
         ExpenseData(ExpenseType.INCOME, "캐시백", "교통카드 캐시백", 15200),
-        ExpenseData(ExpenseType.EXPENSE, "편의점", "술안주", 5300),ExpenseData(ExpenseType.EXPENSE, "쿠팡 주문", "양배추", 19600),
+        ExpenseData(ExpenseType.EXPENSE, "편의점", "술안주", 5300),
+        ExpenseData(ExpenseType.EXPENSE, "쿠팡 주문", "양배추", 19600),
         ExpenseData(ExpenseType.EXPENSE, "공과금", "전기 요금", 8700),
         ExpenseData(ExpenseType.INCOME, "캐시백", "교통카드 캐시백", 15200),
         ExpenseData(ExpenseType.EXPENSE, "편의점", "술안주", 5300)

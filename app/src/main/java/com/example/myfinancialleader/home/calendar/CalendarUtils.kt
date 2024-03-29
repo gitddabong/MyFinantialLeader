@@ -1,10 +1,10 @@
-package com.example.myfinancialleader.calendar
+package com.example.myfinancialleader.home.calendar
 
 import java.time.DayOfWeek
 import java.time.LocalDate
 
 /**
- * 2024-02-28 과 같은 ISO 8601 포맷으로 입력합니다.
+ * ISO 8601 포맷으로 입력합니다. ex) 2024-02-28
  */
 fun getCalendarData(targetDate: CalendarDate): List<String> {
     // 연도, 월에 맞춰서 7의 배수의 캘린더 리스트 생성
