@@ -71,15 +71,18 @@ fun CalendarViewPager(modifier: Modifier) {
                 .fillMaxWidth()
                 .constrainAs(calendarTable) { top.linkTo(dayOfWeekList.bottom, margin = 5.dp) },
             state = pagerState,
-        ) { page ->
+            beyondBoundsPageCount = 2
+        ) { index ->
             val targetDate = getTargetDate(
+                currentIndex = index,
                 pagerState = pagerState,
                 baseDate = LocalDate.now()
             )
 
             CalendarView(
                 dataList = getCalendarData(targetDate),
-                pagerState = pagerState
+                pagerState = pagerState,
+                currentIndex = index
             )
         }
     }
@@ -175,7 +178,7 @@ fun DayOfWeekLayout(modifier: Modifier) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CalendarView(dataList: List<String>, pagerState: PagerState) {
+fun CalendarView(dataList: List<String>, pagerState: PagerState, currentIndex: Int = pagerState.currentPage) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 7),
         contentPadding = PaddingValues(0.dp), // 각 아이템 사이의 패딩을 0으로 설정하여 간격 없음을 보장합니다.
@@ -183,7 +186,7 @@ fun CalendarView(dataList: List<String>, pagerState: PagerState) {
         horizontalArrangement = Arrangement.spacedBy(0.dp), // 가로 간격을 0으로 설정합니다.
     ) {
         itemsIndexed(dataList) {rowIndex, rowData ->
-            val isFocused = rowData.contains("${getTargetDate(LocalDate.now(), pagerState).month}월")
+            val isFocused = rowData.contains("${getTargetDate(LocalDate.now(), pagerState, currentIndex).month}월")
             if (isFocused) {
                 CellItem(text = rowData)
             } else {
@@ -217,9 +220,8 @@ fun BlankItem() {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-private fun getTargetDate(baseDate: LocalDate, pagerState: PagerState): CalendarDate {
-    val currentPage = pagerState.currentPage
-    val targetDate = baseDate.plusMonths((currentPage - pagerState.initialPage).toLong())
+private fun getTargetDate(baseDate: LocalDate, pagerState: PagerState, currentIndex: Int = pagerState.currentPage): CalendarDate {
+    val targetDate = baseDate.plusMonths((currentIndex - pagerState.initialPage).toLong())
 
     return CalendarDate(
         targetDate.year,
