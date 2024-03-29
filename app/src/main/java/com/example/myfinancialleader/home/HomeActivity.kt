@@ -1,4 +1,4 @@
-package com.example.myfinancialleader.calendar
+package com.example.myfinancialleader.home
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,16 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.lifecycleScope
-import com.example.myfinancialleader.calendar.ui.theme.CalendarViewPager
-import com.example.myfinancialleader.calendar.ui.theme.MyFinancialLeaderTheme
-import com.example.myfinancialleader.calendar.ui.theme.expense_list.BottomExpenseListView
-import kotlinx.coroutines.CoroutineScope
+import com.example.myfinancialleader.home.calendar.CalendarViewPager
+import com.example.myfinancialleader.home.expense_list.BottomExpenseListView
+import com.example.myfinancialleader.ui.theme.MyFinancialLeaderTheme
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +41,8 @@ class HomeActivity : ComponentActivity() {
                                 end.linkTo(parent.end)
                             }
                         )
+
+
                     }
                 }
             }
