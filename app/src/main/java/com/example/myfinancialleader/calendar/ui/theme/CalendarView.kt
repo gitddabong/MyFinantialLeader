@@ -40,9 +40,9 @@ private const val LIMIT_CALENDAR_SIZE = Int.MAX_VALUE
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CalendarViewPager() {
+fun CalendarViewPager(modifier: Modifier) {
     ConstraintLayout (
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         val pagerState = createCalendarPagerState()
         val (calendarTitle, dayOfWeekList, calendarTable) = createRefs()
@@ -57,26 +57,14 @@ fun CalendarViewPager() {
             pagerState = pagerState
         )
 
-        val dayOfWeekItems = listOf(
-            "SUN","MON", "TUS", "WED", "THU", "FRI", "SAT"
-        )
-
-        LazyVerticalGrid(
+        DayOfWeekLayout(
             modifier = Modifier
                 .constrainAs(dayOfWeekList) {
                     top.linkTo(calendarTitle.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                },
-            columns = GridCells.Fixed(count = 7),
-            contentPadding = PaddingValues(0.dp), // 각 아이템 사이의 패딩을 0으로 설정하여 간격 없음을 보장합니다.
-            verticalArrangement = Arrangement.spacedBy(0.dp), // 세로 간격을 0으로 설정합니다.
-            horizontalArrangement = Arrangement.spacedBy(0.dp), // 가로 간격을 0으로 설정합니다.
-        ) {
-            itemsIndexed(dayOfWeekItems) {rowIndex, rowData ->
-                CellItem(text = rowData)
-            }
-        }
+                }
+        )
 
         HorizontalPager(
             modifier = Modifier
@@ -164,6 +152,26 @@ fun CalendarTitleLayout(modifier: Modifier, pagerState: PagerState) {
         }
     }
 }
+
+@Composable
+fun DayOfWeekLayout(modifier: Modifier) {
+    val dayOfWeekItems = listOf(
+        "SUN", "MON", "TUS", "WED", "THU", "FRI", "SAT"
+    )
+
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Fixed(count = 7),
+        contentPadding = PaddingValues(0.dp), // 각 아이템 사이의 패딩을 0으로 설정하여 간격 없음을 보장합니다.
+        verticalArrangement = Arrangement.spacedBy(0.dp), // 세로 간격을 0으로 설정합니다.
+        horizontalArrangement = Arrangement.spacedBy(0.dp), // 가로 간격을 0으로 설정합니다.
+    ) {
+        itemsIndexed(dayOfWeekItems) { rowIndex, rowData ->
+            CellItem(text = rowData)
+        }
+    }
+}
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

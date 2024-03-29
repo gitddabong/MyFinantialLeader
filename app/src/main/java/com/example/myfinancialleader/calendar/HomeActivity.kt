@@ -10,9 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.example.myfinancialleader.calendar.ui.theme.CalendarViewPager
 import com.example.myfinancialleader.calendar.ui.theme.MyFinancialLeaderTheme
+import com.example.myfinancialleader.calendar.ui.theme.expense_list.BottomExpenseListView
 import kotlinx.coroutines.CoroutineScope
 
 class HomeActivity : ComponentActivity() {
@@ -25,30 +27,28 @@ class HomeActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    showCalendarView()
+                    ConstraintLayout {
+                        val (calendarViewPager, expenseListView) = createRefs()
+
+                        CalendarViewPager(modifier = Modifier
+                            .constrainAs(calendarViewPager) {
+                                top.linkTo(parent.top)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                            }
+                        )
+
+                        BottomExpenseListView(modifier = Modifier
+                            .constrainAs(expenseListView) {
+                                top.linkTo(calendarViewPager.bottom)
+                                bottom.linkTo(parent.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                            }
+                        )
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun showCalendarView() {
-    CalendarViewPager()
-}
-
-@Composable
-fun Greeting2(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview2() {
-    MyFinancialLeaderTheme {
-        Greeting2("Android")
     }
 }
