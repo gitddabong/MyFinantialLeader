@@ -23,8 +23,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Text(text = "액티비티 이동")
                 }
-
-                ExpenseAdditionNavController()
             }
         }
     }
