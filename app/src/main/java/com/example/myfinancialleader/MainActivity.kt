@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import com.example.myfinancialleader.home.HomeActivity
-import com.example.myfinancialleader.home.expense_addition.ExpenseAdditionNavController
+import com.example.myfinancialleader.expense_addition.ExpenseAdditionNavController
 import com.example.myfinancialleader.ui.theme.MyFinancialLeaderTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
                 }
 
                 ExpenseAdditionNavController()
-
             }
         }
     }
