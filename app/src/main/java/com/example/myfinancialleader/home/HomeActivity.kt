@@ -1,5 +1,6 @@
 package com.example.myfinancialleader.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -11,7 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.example.myfinancialleader.expense_addition.ExpenseAdditionActivity
 import com.example.myfinancialleader.home.calendar.CalendarViewPager
 import com.example.myfinancialleader.home.expense_list.BottomExpenseListView
 import com.example.myfinancialleader.ui.theme.MyFinancialLeaderTheme
@@ -50,9 +53,10 @@ class HomeActivity : ComponentActivity() {
                             .constrainAs(ExpenseAdditionButton) {
                                 end.linkTo(parent.end)
                                 bottom.linkTo(parent.bottom)
-                            },
+                            }
+                            .zIndex(1.0f),
                             onClick = {
-                                Toast.makeText(this@HomeActivity, "하이?", Toast.LENGTH_SHORT).show()
+                                startActivity(Intent(this@HomeActivity, ExpenseAdditionActivity::class.java))
                             }
                         )
                     }
