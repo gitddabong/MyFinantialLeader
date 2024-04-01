@@ -17,7 +17,9 @@ class ExpenseAdditionActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyFinancialLeaderTheme {
-                ExpenseAdditionNavController()
+                ExpenseAdditionNavController(
+                    onBackPressed = { onBackPressed() }
+                )
             }
         }
     }
