@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintLayoutScope
@@ -219,8 +220,8 @@ fun SecondScreen(navController: NavController, expenseType: String, amount: Stri
         LazyVerticalGrid(
             columns = GridCells.Fixed(4),
             contentPadding = PaddingValues(8.dp),
-            verticalArrangement = Arrangement.spacedBy(0.dp), // 세로 간격을 0으로 설정합니다.
-            horizontalArrangement = Arrangement.spacedBy(0.dp), // 가로 간격을 0으로 설정합니다.
+            verticalArrangement = Arrangement.spacedBy(20.dp), // 세로 간격을 0으로 설정합니다.
+            horizontalArrangement = Arrangement.spacedBy(10.dp), // 가로 간격을 0으로 설정합니다.
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(categoryList) {
@@ -229,25 +230,53 @@ fun SecondScreen(navController: NavController, expenseType: String, amount: Stri
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
+                .padding(20.dp, 0.dp)
         ) {
             itemsIndexed(getDummyData()) { index, item ->
-                CellItem(item)
+                CellItem(
+                    data = item,
+                    onClickEvent = {
+                        // TODO : 아이템 추가 로직
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-fun CellItem(data: ExpenseAdditionCategoryData) {
-    Box {
-        Image (
-            modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = data.imageResource),
-            contentDescription = "ExpenseAdditionBackButton",
-            contentScale = ContentScale.Fit
-        )
+fun CellItem(data: ExpenseAdditionCategoryData, onClickEvent: () -> Unit) {
+    Button(onClick = {
+        onClickEvent.invoke()
+    }) {
+        ConstraintLayout {
+            val (categoryImage, categoryDetailText) = createRefs()
 
-        Text(text = data.categoryTitle)
+            Image(
+                modifier = Modifier
+                    .size(50.dp)
+                    .constrainAs(categoryImage) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                painter = painterResource(id = data.imageResource),
+                contentDescription = "ExpenseAdditionBackButton",
+                contentScale = ContentScale.Fit
+            )
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(categoryDetailText) {
+                        top.linkTo(categoryImage.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                text = data.categoryTitle,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
