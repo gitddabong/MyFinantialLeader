@@ -1,6 +1,7 @@
 package com.example.myfinancialleader.expense_addition
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,7 +47,7 @@ import com.example.myfinancialleader.expense_addition.data.ExpenseAdditionCatego
 import com.example.myfinancialleader.home.expense_list.ExpenseType
 
 @Composable
-fun ExpenseAdditionNavController(onBackPressed: () -> Unit) {
+fun ExpenseAdditionNavController(onBackPressed: () -> Unit, onSuccess: () -> Unit) {
     val navController = rememberNavController()
 
     NavHost(
@@ -65,15 +66,14 @@ fun ExpenseAdditionNavController(onBackPressed: () -> Unit) {
                 val amount = getString("amount")
 
                 if (expenseType != null && amount != null) {
-                    SecondScreen(navController, expenseType, amount)
+                    SecondScreen(
+                        navController = navController,
+                        expenseType = expenseType,
+                        amount = amount,
+                        onSuccess = onSuccess
+                    )
                 }
             }
-        }
-        composable("third/{value}") { backStackEntry ->
-//            ThirdScreen(
-//                navController = navController,
-//                value = backStackEntry.arguments?.getString("value") ?: ""
-//            )
         }
     }
 }
@@ -196,7 +196,7 @@ fun FirstScreen(navController: NavController, onBackPressed: () -> Unit) {
 }
 
 @Composable
-fun SecondScreen(navController: NavController, expenseType: String, amount: String) {
+fun SecondScreen(navController: NavController, expenseType: String, amount: String, onSuccess: () -> Unit) {
     ExpenseAdditionLayout(
         onBackPressed = { navController.popBackStack() }
     ) {
@@ -210,6 +210,7 @@ fun SecondScreen(navController: NavController, expenseType: String, amount: Stri
             modifier = Modifier
                 .constrainAs(detailTextField) {
                     top.linkTo(parent.top)
+                    bottom.linkTo(categoryList.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
@@ -237,6 +238,7 @@ fun SecondScreen(navController: NavController, expenseType: String, amount: Stri
                     data = item,
                     onClickEvent = {
                         // TODO : 아이템 추가 로직
+                        onSuccess.invoke()
                     }
                 )
             }
@@ -246,38 +248,40 @@ fun SecondScreen(navController: NavController, expenseType: String, amount: Stri
 
 @Composable
 fun CellItem(data: ExpenseAdditionCategoryData, onClickEvent: () -> Unit) {
-    Button(onClick = {
-        onClickEvent.invoke()
-    }) {
-        ConstraintLayout {
-            val (categoryImage, categoryDetailText) = createRefs()
+    ConstraintLayout(
+        modifier = Modifier
+            .clickable {
+                onClickEvent.invoke()
+            }
+    ) {
+        val (categoryImage, categoryDetailText) = createRefs()
 
-            Image(
-                modifier = Modifier
-                    .size(50.dp)
-                    .constrainAs(categoryImage) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    },
-                painter = painterResource(id = data.imageResource),
-                contentDescription = "ExpenseAdditionBackButton",
-                contentScale = ContentScale.Fit
-            )
+        Image(
+            modifier = Modifier
+                .size(50.dp)
+                .constrainAs(categoryImage) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
+            painter = painterResource(id = data.imageResource),
+            contentDescription = "ExpenseAdditionBackButton",
+            contentScale = ContentScale.Fit
+        )
 
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(categoryDetailText) {
-                        top.linkTo(categoryImage.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    },
-                text = data.categoryTitle,
-                textAlign = TextAlign.Center
-            )
-        }
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(categoryDetailText) {
+                    top.linkTo(categoryImage.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
+            text = data.categoryTitle,
+            textAlign = TextAlign.Center
+        )
     }
+
 }
 
 private fun getDummyData(): List<ExpenseAdditionCategoryData> {

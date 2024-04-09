@@ -18,7 +18,11 @@ class ExpenseAdditionActivity : ComponentActivity() {
         setContent {
             MyFinancialLeaderTheme {
                 ExpenseAdditionNavController(
-                    onBackPressed = { onBackPressed() }
+                    onBackPressed = { onBackPressed() },
+                    onSuccess = {
+                        setResult(RESULT_OK)
+                        finish()
+                    }
                 )
             }
         }
