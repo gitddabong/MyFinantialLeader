@@ -18,9 +18,15 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,8 +36,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.myfinancialleader.R
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import kotlin.math.abs
 
 private const val LIMIT_CALENDAR_SIZE = Int.MAX_VALUE
 
@@ -68,19 +76,48 @@ fun CalendarViewPager(modifier: Modifier) {
                 .fillMaxWidth()
                 .constrainAs(calendarTable) { top.linkTo(dayOfWeekList.bottom, margin = 5.dp) },
             state = pagerState,
+            pageSpacing = 15.dp,
             beyondBoundsPageCount = 2
         ) { index ->
-            val targetDate = getTargetDate(
-                currentIndex = index,
-                pagerState = pagerState,
-                baseDate = LocalDate.now()
-            )
+            @Suppress("NAME_SHADOWING")
+            val index by rememberUpdatedState(newValue = index)
+            val authorizedPage = {
+                abs(pagerState.settledPage - index) <= 2
+            }
+            val authorizedTiming by produceState(initialValue = false) {
+                while (pagerState.isScrollInProgress) delay(50)
+                if (abs(pagerState.settledPage - index) > 0) {
+                    delay(500)
+                    while (pagerState.isScrollInProgress) delay(50)
+                }
+                value = true
+            }
+            // Conditions to show content
+            val showContent by remember {
+                derivedStateOf {
+                    authorizedPage() && authorizedTiming
+                }
+            }
 
-            CalendarView(
-                dataList = getCalendarData(targetDate),
-                pagerState = pagerState,
-                currentIndex = index
-            )
+            if (showContent) {
+                val targetDate = getTargetDate(
+                    currentIndex = index,
+                    pagerState = pagerState,
+                    baseDate = LocalDate.now()
+                )
+
+                CalendarView(
+                    dataList = getCalendarData(targetDate),
+                    pagerState = pagerState,
+                    currentIndex = index
+                )
+            } else {
+                Box(
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
         }
     }
 }
